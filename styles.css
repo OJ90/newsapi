@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+article {
+    background-color: #f4f4f4;
+    padding: 1rem;
+    border-radius: 5px;
+    width: 100%;
+}
+
+article h2 {
+    margin-top: 0;
+}
+
+@media(min-width: 768px) {
+    article {
+        width: calc(50% - 1rem);
+    }
+}
