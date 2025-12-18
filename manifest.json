@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "News Feed",
-  "version": "1.0.0",
-  "description": "A Chrome extension that displays top news headlines",
+  "name": "AI & ML News",
+  "version": "1.1.0",
+  "description": "A Chrome extension that displays the latest AI and Machine Learning news",
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
@@ -10,7 +10,7 @@
   },
   "action": {
     "default_popup": "index.html",
-    "default_title": "News Feed",
+    "default_title": "AI & ML News",
     "default_icon": {
       "16": "icon16.png",
       "48": "icon48.png",

@@ -1,19 +1,52 @@
 const apiKey = '1a0fc5bc90e44ccd93cb9ea23b6ee03c'
 const newsContainer = document.getElementById('news-container');
 
+// AI/ML focused search terms
+const AI_ML_KEYWORDS = [
+    'artificial intelligence',
+    'machine learning',
+    'deep learning',
+    'neural network',
+    'ChatGPT',
+    'OpenAI',
+    'LLM',
+    'generative AI',
+    'GPT',
+    'Claude',
+    'Anthropic',
+    'Google AI',
+    'AI model'
+];
+
+// Build search query for AI/ML news
+const searchQuery = encodeURIComponent(
+    '"artificial intelligence" OR "machine learning" OR "deep learning" OR ' +
+    '"neural network" OR ChatGPT OR OpenAI OR "generative AI" OR GPT OR ' +
+    'LLM OR Claude OR Anthropic'
+);
+
 function showLoading() {
-    newsContainer.innerHTML = '<div class="loading">Loading news...</div>';
+    newsContainer.innerHTML = '<div class="loading">Loading AI & ML news...</div>';
 }
 
 function showError(message) {
     newsContainer.innerHTML = `<div class="error">Error: ${message}</div>`;
 }
 
+// Check if article is relevant to AI/ML
+function isAIMLRelevant(article) {
+    const text = `${article.title || ''} ${article.description || ''}`.toLowerCase();
+    return AI_ML_KEYWORDS.some(keyword => text.includes(keyword.toLowerCase()));
+}
+
 async function fetchNews() {
     showLoading();
 
     try {
-        const response = await fetch(`https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`);
+        // Use /everything endpoint with AI/ML search query, sorted by publish date
+        const response = await fetch(
+            `https://newsapi.org/v2/everything?q=${searchQuery}&language=en&sortBy=publishedAt&pageSize=50&apiKey=${apiKey}`
+        );
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -26,9 +59,20 @@ async function fetchNews() {
         }
 
         if (newsData.articles && newsData.articles.length > 0) {
-            displayNews(newsData.articles);
+            // Filter for AI/ML relevance and remove articles with missing content
+            const relevantArticles = newsData.articles.filter(article =>
+                article.title &&
+                article.title !== '[Removed]' &&
+                isAIMLRelevant(article)
+            );
+
+            if (relevantArticles.length > 0) {
+                displayNews(relevantArticles);
+            } else {
+                newsContainer.innerHTML = '<div class="no-news">No AI & ML news articles found.</div>';
+            }
         } else {
-            newsContainer.innerHTML = '<div class="no-news">No news articles found.</div>';
+            newsContainer.innerHTML = '<div class="no-news">No AI & ML news articles found.</div>';
         }
     } catch (error) {
         console.error('Error fetching news:', error);
